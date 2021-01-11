@@ -1,3 +1,11 @@
+<?php
+session_start();
+if(empty($_SESSION['user_id'])&& empty($_SESSION['logged_in'])){
+	header('Location: login.php');
+}
+
+?>
+
 <!DOCTYPE html>
 <!--
 This is a starter template page. Use this page to start your new project from
@@ -42,6 +50,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </div>
       </div>
     </form>
+	  <ul class="navbar-nav ml-auto">
+	   
+	  </ul>
 
    
   
@@ -97,7 +108,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Starter Page</h1>
+            <h1 class="m-0 text-">BLOGGER MM</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -198,7 +209,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <footer class="main-footer">
     
    <div class="float-right d-none d-sm-inline">
-	  Blog
+	  <a href="logout.php" type="button" class="btn btn-danger">
+		  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+  <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+</svg>Logout
+		  </a>	 
 	  </div>
     <!-- Default to the left -->
     <strong>Copyright &copy; 2021-2022<a href="https://www.facebook.com/jeremie7577"> HeinHtetKyaw</a>.</strong> All rights reserved.

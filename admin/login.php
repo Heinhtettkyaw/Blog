@@ -1,9 +1,22 @@
 <?php
+session_start();
  require '../config/config.php';
 if($_POST){
 	$email=$_POST['email'];
 	$password=$_POST['password'];
-	$stmt= $pdo->prepare("")
+	$stmt= $pdo->prepare("SELECT * FROM users WHERE email=:email");
+	$stmt->bindValue(':email',$email);
+	$stmt->execute();
+	$user=$stmt->fetch(PDO::FETCH_ASSOC);
+	if($user){
+		if($user['password']==$password){
+			$_SESSION['user_id']== $user['id'];
+			$_SESSION['logged_in']=time();
+			header('Location: index.php');
+		}
+	}
+	echo "<script>alert('Incorrect email and password')</script>";
+	
 }
 
 ?>
@@ -34,6 +47,8 @@ if($_POST){
   <div class="login-logo">
     <a href="../admin/login.php"><b>BlogAdmin</b></a>
   </div>
+	
+	
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
@@ -41,7 +56,7 @@ if($_POST){
 
       <form action="../admin/login.php" method="post">
         <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Email">
+          <input type="email" name="email" class="form-control" placeholder="Email">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
@@ -49,7 +64,7 @@ if($_POST){
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password">
+          <input type="password" name="password" class="form-control" placeholder="Password">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
