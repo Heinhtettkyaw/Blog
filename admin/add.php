@@ -4,6 +4,30 @@ session_start();
 if(empty($_SESSION['user_id'])&& empty($_SESSION['logged_in'])){
 	header('Location: login.php');
 }
+if ($_POST){
+	$file= "images/" .($_FILES['image']['name']);
+	$imageType=pathinfo($file,PATHINFO_EXTENSION);
+	if($imageType != 'png' && $imageType != 'jpg' && $imageType != 'jpeg' ){
+		echo  "<script>alert('Image Extension must be jpeg,jpg,png')</script>";
+	}else{
+		move_uploaded_file($_FILES['image']['tmp_name'],$file);
+		$title=$_POST['title'];
+		$content=$_POST['content'];
+		$image=$_FILES['image']['name'];
+		$stmt=	$pdo->prepare("INSERT INTO posts (title,content,image,author_id) VALUES (:title,:content,:image,:author_id)");
+		$result=$stmt->execute(
+		array(':title'=>$title,
+			  ':content'=>$content,
+			  ':image'=>$image,
+			  ':author_id'=>$_SESSION['user_id']
+			 )
+		);
+		if($result){
+			echo  "<script>alert('Your Post is added to the Blog');window.location.href='index.php';</script>";
+			
+		}
+	}
+}
 
 ?>
 
@@ -63,7 +87,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index.php" class="brand-link">
+    <a href="../index.html" class="brand-link">
       <img src="../dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
       <span class="brand-text font-weight-light">Panel</span>
@@ -88,7 +112,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                with font-awesome or any other icon font library -->
           
           <li class="nav-item">
-            <a href="index.php" class="nav-link">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Blogs
@@ -115,7 +139,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <ol class="breadcrumb float-sm-right">
              <!-- <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item active">Starter Page</li>-->
-				<a href="add.php" type="button" class="btn btn-success"><i class="fa fa-plus">   </i> Create Posts</a>
+				
             </ol>
           </div> <!-- /.col -->
         </div><!-- /.row -->
@@ -128,79 +152,47 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <div class="container-fluid">
         <div class="row">
          <div class="col-md-12">
-            <div class="card">
+            
+            <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Bordered Table</h3>
+                <h3 class="card-title">What's on your mind?</h3>
               </div>
-				<?php
-				$stmt= $pdo->prepare("SELECT * FROM posts ORDER BY id DESC");
-				$stmt->execute();
-				$result= $stmt->fetchAll();
-				
-				?>
-				 
               <!-- /.card-header -->
-              <div class="card-body">
-                <table class="table table-bordered">
-                  <thead>                  
-                    <tr>
-                      <th style="width: 10px">#</th>
-                      <th>Title</th>
-                      <th>Content</th>
-                      <th style="width: 130px">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                   <?php
-					  if ($result){
-						  $i=1;
-						  foreach ($result as $value){?>
-					   <tr>
-						   
-                      <td><?php echo $i; ?></td>
-                      <td><?php echo $value['title']; ?></td>
-                      <td> <?php echo $value['content']; ?></td>
-                      <td>
-						  <div >
-						<a href="edit.php?id=<?php echo $value['id']; ?>" type="button" class="btn btn-warning">
-					  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-  						<path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-  						<path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
-						</svg>
-							  
-							</a>
-							  <a href="delete.php?id=<?php echo $value['id']; ?>" onClick="return confirm('Are you sure you want to delete?')" type="button" class="btn btn-danger">
-							  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-  								<path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-  								<path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-							  </svg>
-							  
-							  </a>
-							  </div>
-					  </td>
-                    </tr>
-					  
-							  <?php
-							  $i++;
-						  }
-					  }
-					  ?>
-                   
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.card-body -->
-              <div class="card-footer clearfix">
-                <ul class="pagination pagination-sm m-0 float-right">
-                  <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                  <li class="page-item"><a class="page-link" href="#">1</a></li>
-                  <li class="page-item"><a class="page-link" href="#">2</a></li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
-                </ul>
-              </div>
+              <!-- form start -->
+              <form class="" action="add.php" method="post" enctype="multipart/form-data">
+                <div class="card-body">
+                  <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" class="form-control" name="title" placeholder="Title" required >
+                  </div>
+                  <div class="form-group">
+                    <label for="content">Content</label>
+                    <input type="text" class="form-control" name="content" placeholder="" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputFile">File input</label>
+                    <div class="input-group">
+                      <div class="custom-file">
+                        <input type="file" class="custom-file-input" name="image">
+                        <label class="custom-file-label" for="image">Choose file</label>
+                      </div>
+                      
+                    </div>
+                  </div>
+					<!--<div class="form-group">
+					<label for="image">Photo</label><br>
+					<input type="file" name="image" value="" required>
+					</div>-->
+                  
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                  <input type="submit" class="btn btn-primary" value="Submit">
+					   <a href="index.php" type="button" class="btn btn-secondary">Back</a>
+                </div>
+              </form>
             </div>
-            <!-- /.card -->
 
             
             <!-- /.card -->
