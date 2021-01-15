@@ -1,3 +1,11 @@
+<?php
+ require 'config/config.php';
+session_start();
+if(empty($_SESSION['user_id'])&& empty($_SESSION['logged_in'])){
+	header('Location: login.php');
+}
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,7 +27,7 @@
 <div class="wrapper">
   
   <!-- Content Wrapper. Contains page content -->
-  <div class="">
+  <div class="content-wrapper" style="margin-left: 0px;">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
@@ -31,197 +39,52 @@
             </ol>
           </div>-->
         </div>
-      </div><!-- /.container-fluid -->
+     <!-- /.container-fluid -->
     </section>
-
+	<?php
+	  $stmt= $pdo->prepare("SELECT * FROM posts ORDER BY id DESC");
+				$stmt->execute();
+				$result= $stmt->fetchAll();
+	  
+	  ?>
     <!-- Main content -->
     <section class="content">
     <div class="row">
-          <div class="col-md-4">
-            <!-- Box Comment -->
+		 <?php
+					  if ($result){
+						  $i=1;
+						  foreach ($result as $value){?>
+			<div class="col-md-4">
+            
             <div class="card card-widget">
               <div class="card-header">
-               <!-- <div class="user-block">
-                  <span class="username"><a href="#">Blog Title</a></span>
-                  <span class="description">Shared publicly - 7:30 PM Today</span>
-                </div>
-                <!-- /.user-block -->
-               
-                
-				  
 				 <div style="text-align: center; float: none;" class="card-title">
-				  <h4>Blog Title</h4>
+				  <h4><?php echo $value['title']; ?></h4>
 					  
 				  </div>
               </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <img class="img-fluid pad" src="dist/img/photo2.png" alt="Photo">
-
-                <p>I took this photo this morning. What do you guys think?</p>
-               
-              </div>
-              <!-- /.card-body -->
-             
               
-            </div>
+              <div class="card-body">
+               <!-- <img class="img-fluid pad" src="dist/img/photo2.png" alt="Photo">-->
+				<a href="blogDetail.php?id=<?php echo $value['id']; ?>" ><img class="img-fluid pad" src="admin/images/<?php echo $value['image'];?>" style="height: 300px !important"> </a>
+                <p>I took this photo this morning. What do you guys think?</p>
+              </div>
+				
+			</div>
             <!-- /.card -->
           </div>
+
+							  <?php
+							  $i++;
+						  }
+					  }
+					  ?>
+          
           <!-- /.col -->
-     	<div class="col-md-4">
-            <!-- Box Comment -->
-            <div class="card card-widget">
-              <div class="card-header">
-               <!-- <div class="user-block">
-                  <span class="username"><a href="#">Blog Title</a></span>
-                  <span class="description">Shared publicly - 7:30 PM Today</span>
-                </div>
-                <!-- /.user-block -->
-               
-                
-				  
-				 <div style="text-align: center; float: none;" class="card-title">
-				  <h4>Blog Title</h4>
-					  
-				  </div>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <img class="img-fluid pad" src="dist/img/photo2.png" alt="Photo">
-
-                <p>I took this photo this morning. What do you guys think?</p>
-               
-              </div>
-              <!-- /.card-body -->
-             
-              
-            </div>
-            <!-- /.card -->
-          </div>
-		<div class="col-md-4">
-            <!-- Box Comment -->
-            <div class="card card-widget">
-              <div class="card-header">
-               <!-- <div class="user-block">
-                  <span class="username"><a href="#">Blog Title</a></span>
-                  <span class="description">Shared publicly - 7:30 PM Today</span>
-                </div>
-                <!-- /.user-block -->
-               
-                
-				  
-				 <div style="text-align: center; float: none;" class="card-title">
-				  <h4>Blog Title</h4>
-					  
-				  </div>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <img class="img-fluid pad" src="dist/img/photo2.png" alt="Photo">
-
-                <p>I took this photo this morning. What do you guys think?</p>
-               
-              </div>
-              <!-- /.card-body -->
-             
-              
-            </div>
-            <!-- /.card -->
-          </div>
+     
+		
         </div>
-		<div class="row">
-          <div class="col-md-4">
-            <!-- Box Comment -->
-            <div class="card card-widget">
-              <div class="card-header">
-               <!-- <div class="user-block">
-                  <span class="username"><a href="#">Blog Title</a></span>
-                  <span class="description">Shared publicly - 7:30 PM Today</span>
-                </div>
-                <!-- /.user-block -->
-               
-                
-				  
-				 <div style="text-align: center; float: none;" class="card-title">
-				  <h4>Blog Title</h4>
-					  
-				  </div>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <img class="img-fluid pad" src="dist/img/photo2.png" alt="Photo">
-
-                <p>I took this photo this morning. What do you guys think?</p>
-               
-              </div>
-              <!-- /.card-body -->
-             
-              
-            </div>
-            <!-- /.card -->
-          </div>
-          <!-- /.col -->
-     	<div class="col-md-4">
-            <!-- Box Comment -->
-            <div class="card card-widget">
-              <div class="card-header">
-               <!-- <div class="user-block">
-                  <span class="username"><a href="#">Blog Title</a></span>
-                  <span class="description">Shared publicly - 7:30 PM Today</span>
-                </div>
-                <!-- /.user-block -->
-               
-                
-				  
-				 <div style="text-align: center; float: none;" class="card-title">
-				  <h4>Blog Title</h4>
-					  
-				  </div>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <img class="img-fluid pad" src="dist/img/photo2.png" alt="Photo">
-
-                <p>I took this photo this morning. What do you guys think?</p>
-               
-              </div>
-              <!-- /.card-body -->
-             
-              
-            </div>
-            <!-- /.card -->
-          </div>
-		<div class="col-md-4">
-            <!-- Box Comment -->
-            <div class="card card-widget">
-              <div class="card-header">
-               <!-- <div class="user-block">
-                  <span class="username"><a href="#">Blog Title</a></span>
-                  <span class="description">Shared publicly - 7:30 PM Today</span>
-                </div>
-                <!-- /.user-block -->
-               
-                
-				  
-				 <div style="text-align: center; float: none;" class="card-title">
-				  <h4>Blog Title</h4>
-					  
-				  </div>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <img class="img-fluid pad" src="dist/img/photo2.png" alt="Photo">
-
-                <p>I took this photo this morning. What do you guys think?</p>
-               
-              </div>
-              <!-- /.card-body -->
-             
-              
-            </div>
-            <!-- /.card -->
-          </div>
-        </div>
+		
     </section>
     <!-- /.content -->
 
@@ -233,10 +96,15 @@
 
   <footer class="main-footer" style="margin-left: 0px !Important;">
     <div class="float-right d-none d-sm-block">
-      <b>Version</b> 3.0.5
+     <a href="logout.php" type="button" class="btn btn-danger">
+		  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+  <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+</svg>Logout
+		  </a>
     </div>
-    <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong> All rights
-    reserved.
+        <strong>Copyright &copy; 2021-2022<a href="https://www.facebook.com/jeremie7577"> HeinHtetKyaw</a>.</strong> All rights reserved.
+
   </footer>
 
   <!-- Control Sidebar -->

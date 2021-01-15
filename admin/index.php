@@ -138,7 +138,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         }else{
 			$pageno=1;
 		}
-				$numOfrecs=1;
+				$numOfrecs=5;
 				$offset= ($pageno-1)* $numOfrecs;
         if(empty($_POST['search'])){
 			
