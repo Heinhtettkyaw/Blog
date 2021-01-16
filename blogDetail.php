@@ -12,11 +12,16 @@ $blogId=$_GET['id'];
 $stmtcmt=$pdo->prepare("SELECT * FROM comments WHERE post_id=$blogId");
 $stmtcmt->execute();
 $cmResult=$stmtcmt->fetchAll();
-
-$authorId= $cmResult[0]['author_id'];
+$auResult=[];
+if($cmResult){
+	foreach($cmResult as $key=>$value){
+$authorId= $cmResult[$key]['author_id'];
 $stmtau=$pdo->prepare("SELECT * FROM users WHERE id=$authorId");
 $stmtau->execute();
-$auResult=$stmtau->fetchAll();
+$auResult[]=$stmtau->fetchAll();
+	}
+
+}
 if($_POST){
 	$comment=$_POST['comment'];
 
@@ -84,18 +89,28 @@ if($_POST){
               </div>
               
               <div class="card-footer card-comments">
-                <div class="card-comment">
+                
+                <?php
+				  if($cmResult){  ?>
+				<div class="card-comment">
 				  <div class="comment-text" style="margin-left: 0px !important">
-                    <span class="username">
-						<?php echo $auResult[0]['name'] ;?>
-                      
-                      <span class="text-muted float-right"><?php echo $cmResult[0]['created_at']; ?></span>
+					<?php
+					foreach ($cmResult as $key=>$value){?>
+					 <span class="username">
+					<?php echo $auResult[$key][0]['name'] ;?>
+                     <span class="text-muted float-right"><?php echo $value['created_at']; ?></span>
                     </span><!-- /.username -->
-                    <?php echo $cmResult[0]['content']; ?>
+                    <?php echo $value['content']; ?>
+ 
+				<?php	}
+					  
+					  ?>
                   </div>
                   <!-- /.comment-text -->
                 </div>
-                <!-- /.card-comment -->
+				  <?php
+				  }
+				  ?>
                 
                
               </div>
