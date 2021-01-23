@@ -51,6 +51,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 	  ?>
     <!-- SEARCH FORM -->
     <form class="form-inline ml-3" action="users.php" method="post">
+		<input type="hidden" name="_token" value="<?php echo $_SESSION['_token']?>">
       <div class="input-group input-group-sm">
         <input name="search1" class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
         <div class="input-group-append">
