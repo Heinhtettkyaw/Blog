@@ -26,7 +26,7 @@ if($_SESSION['role']!=1){
 	 else{
 	 $id= $_POST['id'];
 	 $name= $_POST['name'];
-	 $password= $_POST['password'];
+	$password=password_hash( $_POST['password'],PASSWORD_DEFAULT);
 	 $email= $_POST['email'];
 	 
 	 if(empty($_POST['role'])){
