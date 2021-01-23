@@ -206,11 +206,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <div class="card-body">
                   <div class="form-group">
                     <label for="title">Title</label><p style="color: red"><?php echo empty($titleError)? '': '*'. $titleError; ?></p>
-                    <input type="text" class="form-control" name="title" value="<?php echo $result[0]['title']; ?>" >
+                    <input type="text" class="form-control" name="title" value="<?php echo escape($result[0]['title']); ?>" >
                   </div>
                   <div class="form-group">
                     <label for="content">Content</label><p style="color: red"><?php echo empty($contentError)? '': '*'.$contentError; ?></p>
-                    <input type="text" class="form-control" name="content" value="<?php echo $result[0]['content']; ?>">
+                    <input type="text" class="form-control" name="content" value="<?php echo escape($result[0]['content']); ?>">
                   </div>
                   <div class="form-group">
                     <label for="exampleInputFile">File input</label>

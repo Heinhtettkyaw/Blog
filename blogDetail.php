@@ -77,7 +77,7 @@ if($_POST){
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-              <li class="breadcrumb-item active"> <?php echo $result[0]['title']; ?></li>
+              <li class="breadcrumb-item active"> <?php echo escape($result[0]['title']); ?></li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -90,7 +90,7 @@ if($_POST){
               <div class="card-header">
                
                 <div style="text-align: center; float: none;" class="card-title">
-				  <h4><?php echo $result[0]['title']; ?></h4>
+				  <h4><?php echo escape($result[0]['title']); ?></h4>
 					  
 				  </div>
                
@@ -99,7 +99,7 @@ if($_POST){
               <div class="card-body">
                 <img class="img-fluid pad" src="admin/images/<?php echo $result[0]['image'];?>" alt="Photo" style="height: auto !important">
 				<br><br>
-                <p style="font-size: 18px;"><?php echo $result[0]['content']; ?></p>
+                <p style="font-size: 18px;"><?php echo escape($result[0]['content']); ?></p>
 				  <hr>
 				  <h4>Comments</h4><hr>
               </div>
@@ -113,10 +113,10 @@ if($_POST){
 					<?php
 					foreach ($cmResult as $key=>$value){?>
 					 <span class="username">
-					<?php echo $auResult[$key][0]['name'] ;?>
-                     <span class="text-muted float-right"><?php echo $value['created_at']; ?></span>
+					<?php echo escape($auResult[$key][0]['name']) ;?>
+                     <span class="text-muted float-right"><?php echo escape($value['created_at']); ?></span>
                     </span><!-- /.username -->
-                    <?php echo $value['content']; ?>
+                    <?php echo escape($value['content']); ?>
  
 				<?php	}
 					  

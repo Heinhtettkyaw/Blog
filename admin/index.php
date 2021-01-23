@@ -1,7 +1,7 @@
 <?php
 session_start();
  require '../config/config.php';
-
+require '../config/common.php';
 if(empty($_SESSION['user_id'])&& empty($_SESSION['logged_in'])){
 	header('Location: login.php');
 }
@@ -197,8 +197,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 					   <tr>
 
                       <td><?php echo $i; ?></td>
-                      <td><?php echo $value['title']; ?></td>
-                      <td> <?php echo $value['content']; ?></td>
+                      <td><?php echo escape($value['title']); ?></td>
+                      <td> <?php echo escape($value['content']); ?></td>
                       <td>
 						  <div >
 						<a href="edit.php?id=<?php echo $value['id']; ?>" type="button" class="btn btn-warning">

@@ -205,8 +205,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 					   <tr>
 
                       <td><?php echo $i; ?></td>
-                      <td><?php echo $value['name']; ?></td>
-                      <td> <?php echo $value['email']; ?></td>
+                      <td><?php echo escape($value['name']); ?></td>
+                      <td> <?php echo escape($value['email']); ?></td>
 						    <td> <?php echo $value['role']==1? "Admin" : "User"; ?></td>
                       <td>
 						  <div >

@@ -188,14 +188,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
          <div class="col-md-12">
               <form action="" method="post">
 				   <input type="hidden" name="_token" value="<?php echo $_SESSION['_token']; ?>">
-				  <input type="hidden" name="id" value="<?php echo $result[0]['id']; ?>">
+				  <input type="hidden" name="id" value="<?php echo escape($result[0]['id']); ?>">
                 <div class="form-group">
                     <label for="">Name</label><p style="color: red"><?php echo empty($nameError)? '': '*'.$nameError; ?></p>
-                    <input type="text" class="form-control" name="name" value="<?php echo $result[0]['name']; ?>">
+                    <input type="text" class="form-control" name="name" value="<?php echo escape($result[0]['name']); ?>">
                 </div>
                 <div class="form-group">
                     <label for="">Email</label><p style="color: red"><?php echo empty($emailError)? '': '*'.$emailError; ?></p>
-                    <input type="email" class="form-control" name="email" value="<?php echo $result[0]['email']; ?>">
+                    <input type="email" class="form-control" name="email" value="<?php echo escape($result[0]['email']); ?>">
                 </div>
                 <div class="form-group">
                     <label for="">Password</label><p style="color: red"><?php echo empty($passwordError)? '': '*'.$passwordError; ?></p>
