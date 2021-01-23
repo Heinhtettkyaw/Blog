@@ -9,6 +9,18 @@ if($_SESSION['role']!=1){
 }
 
 if($_POST){
+		if(empty($_POST['title']) ||  empty($_POST['content']) || empty($_FILES['image'])){
+		
+		if(empty($_POST['title'])){
+			$titleError='Title cannot be null';
+		}
+		if(empty($_POST['content'])){
+			$contentError='Content cannot be null';
+		}
+		if(empty($_FILES['image'])){
+			$imageError='Image cannot be null';
+		}
+	}else{
 	$id=$_POST['id'];
 	$title=$_POST['title'];
 	$content=$_POST['content'];
@@ -43,7 +55,9 @@ if($_POST){
 			echo  "<script>alert('Updated Successfully');window.location.href='index.php';</script>";
 				
 		}
-	}
+		}
+		}
+	
 }
 
 
@@ -187,12 +201,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				  <input type="hidden" name="id" value="<?php echo $result[0]['id']; ?>"
                 <div class="card-body">
                   <div class="form-group">
-                    <label for="title">Title</label>
-                    <input type="text" class="form-control" name="title" value="<?php echo $result[0]['title']; ?>" required >
+                    <label for="title">Title</label><p style="color: red"><?php echo empty($titleError)? '': '*'. $titleError; ?></p>
+                    <input type="text" class="form-control" name="title" value="<?php echo $result[0]['title']; ?>" >
                   </div>
                   <div class="form-group">
-                    <label for="content">Content</label>
-                    <input type="text" class="form-control" name="content" value="<?php echo $result[0]['content']; ?>" required>
+                    <label for="content">Content</label><p style="color: red"><?php echo empty($contentError)? '': '*'.$contentError; ?></p>
+                    <input type="text" class="form-control" name="content" value="<?php echo $result[0]['content']; ?>">
                   </div>
                   <div class="form-group">
                     <label for="exampleInputFile">File input</label>
@@ -200,7 +214,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <div class="input-group">
                       <div class="custom-file">
 						 
-                        <input type="file" class="custom-file-input" name="image">
+                        <input type="file" class="custom-file-input" name="image"><p style="color: red"><?php echo empty($imageError)? '': '*'.$imageError; ?></p>
                         <label class="custom-file-label" for="image">Choose file</label>
                       </div>
                       

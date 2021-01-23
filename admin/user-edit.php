@@ -8,11 +8,26 @@ if($_SESSION['role']!=1){
 }
 
  if($_POST){
+	 if(empty($_POST['name']) ||  empty($_POST['email'])  ){
+		
+		if(empty($_POST['name'])){
+			$nameError='Title cannot be null';
+		}
+		if(empty($_POST['email'])){
+			$emailError='Content cannot be null';
+		}
+		
+		 
+		 
+		 
+	}elseif(!empty($_POST['password']) && strlen($_POST['password'])<6){
+		 $passwordError= 'Password Should be 5 characters at least';
+	 }
+	 else{
 	 $id= $_POST['id'];
 	 $name= $_POST['name'];
-	  $password= $_POST['password'];
-	  $email= $_POST['email'];
-	 
+	 $password= $_POST['password'];
+	 $email= $_POST['email'];
 	 
 	 if(empty($_POST['role'])){
 		 $role=0;
@@ -27,14 +42,22 @@ if($_SESSION['role']!=1){
 	if($user){
 		echo "<script>alert('Email already registered')</script>";
 	}else{
-		
+		if($password!=null){
+			$stmt=	$pdo->prepare("UPDATE users SET name='$name', email='$email',password='$password',role='$role' WHERE id='$id'");
+
+		}else{
 		$stmt=	$pdo->prepare("UPDATE users SET name='$name', email='$email',role='$role' WHERE id='$id'");
+
+		}
 		$result=$stmt->execute();
 		if($result){
 			echo  "<script>alert('Successfully Updated');window.location.href='users.php';</script>";
 			
 		}
 	}
+		 
+	 }
+	
  }
 $stmt=$pdo->prepare("SELECT * FROM users WHERE id=".$_GET['id']);
 $stmt->execute();
@@ -165,16 +188,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <form action="" method="post">
 				  <input type="hidden" name="id" value="<?php echo $result[0]['id']; ?>">
                 <div class="form-group">
-                    <label for="">Name</label>
+                    <label for="">Name</label><p style="color: red"><?php echo empty($nameError)? '': '*'.$nameError; ?></p>
                     <input type="text" class="form-control" name="name" value="<?php echo $result[0]['name']; ?>">
                 </div>
                 <div class="form-group">
-                    <label for="">Email</label>
+                    <label for="">Email</label><p style="color: red"><?php echo empty($emailError)? '': '*'.$emailError; ?></p>
                     <input type="email" class="form-control" name="email" value="<?php echo $result[0]['email']; ?>">
                 </div>
                 <div class="form-group">
-                    <label for="">Password</label>
-                    <input type="password" class="form-control" name="password" value="<?php echo $result[0]['password']; ?>">
+                    <label for="">Password</label><p style="color: red"><?php echo empty($passwordError)? '': '*'.$passwordError; ?></p>
+                    <input type="password" class="form-control" name="password" value=""><span>This user already has password </span>
                 </div>
                 <div class="form-check mb-3">
 					<input type="checkbox" name="role" value="1" <?php echo $result[0]['role'] == 1 ? 'checked':''?>>

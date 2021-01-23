@@ -23,10 +23,8 @@ $auResult[]=$stmtau->fetchAll();
 
 }
 if($_POST){
-	$comment=$_POST['comment'];
-
 	
-		
+		$comment=$_POST['comment'];
 		$stmt=	$pdo->prepare("INSERT INTO comments (content,author_id,post_id) VALUES (:content,:author_id,:post_id)");
 		$result=$stmt->execute(
 		array(':content'=>$comment,
@@ -39,6 +37,7 @@ if($_POST){
 			
 		}
 	
+		
 }
 ?>
 <!DOCTYPE html>

@@ -7,7 +7,26 @@ if($_SESSION['role']!=1){
 		header('Location: login.php');
 }
  if($_POST){
-	 $name= $_POST['name'];
+	 if(empty($_POST['name']) ||  empty($_POST['email']) || empty($_POST['password']) || strlen($_POST['password'])<6){
+		
+		if(empty($_POST['name'])){
+			$nameError='Title cannot be null';
+		}
+		if(empty($_POST['email'])){
+			$emailError='Content cannot be null';
+		}
+		if(empty($_FILES['password'])){
+			$passwordError='Image cannot be null';
+		}
+		 if(strlen($_POST['password']) <6){
+			$passwordError= 'Password Should be 5 characters at least';
+		}
+		 
+		 
+		 
+	}else{
+		 
+	  $name= $_POST['name'];
 	  $password= $_POST['password'];
 	  $email= $_POST['email'];
 	 if(empty($_POST['role'])){
@@ -33,10 +52,12 @@ if($_SESSION['role']!=1){
 			 )
 		);
 		if($result){
-			echo  "<script>alert('Successfully registered, Please Login');window.location.href='login.php';</script>";
+			echo  "<script>alert('Successfully registered, Please Login');window.location.href='users.php';</script>";
 			
 		}
 	}
+	 }
+	 
  }
 ?>
 <!DOCTYPE html>
@@ -73,7 +94,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     </ul>
 
     <!-- SEARCH FORM -->
-    <form class="form-inline ml-3" action="index.php" method="post">
+    <form class="form-inline ml-3" action="users.php" method="post">
       <div class="input-group input-group-sm">
         <input name="search" class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
         <div class="input-group-append">
@@ -162,16 +183,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
          <div class="col-md-12">
               <form action="user-add1.php" method="post">
                 <div class="form-group">
-                    <label for="">Name</label>
-                    <input type="text" class="form-control" name="name" required>
+                    <label for="">Name</label><p style="color: red"><?php echo empty($nameError)? '': '*'.$nameError; ?></p>
+                    <input type="text" class="form-control" name="name" >
                 </div>
                 <div class="form-group">
-                    <label for="">Email</label>
-                    <input type="email" class="form-control" name="email" required>
+                    <label for="">Email</label><p style="color: red"><?php echo empty($emailError)? '': '*'.$emailError; ?></p>
+                    <input type="email" class="form-control" name="email" >
                 </div>
                 <div class="form-group">
-                    <label for="">Password</label>
-                    <input type="password" class="form-control" name="password" required>
+                    <label for="">Password</label><p style="color: red"><?php echo empty($passwordError)? '': '*'.$passwordError; ?></p>
+                    <input type="password" class="form-control" name="password" >
                 </div>
                 <div class="form-check mb-3">
                   <input type="checkbox" class="form-check-input" name="role" value="1">

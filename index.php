@@ -79,7 +79,7 @@ if(empty($_SESSION['user_id'])&& empty($_SESSION['logged_in'])){
               <div class="card-body">
                <!-- <img class="img-fluid pad" src="dist/img/photo2.png" alt="Photo">-->
 				<a href="blogDetail.php?id=<?php echo $value['id']; ?>" ><img class="img-fluid pad" src="admin/images/<?php echo $value['image'];?>" style="height: 300px !important"> </a>
-                <p>I took this photo this morning. What do you guys think?</p>
+                <p><?php echo $value['content']; ?></p>
               </div>
 				
 			</div>

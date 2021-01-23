@@ -8,7 +8,19 @@ if($_SESSION['role']!=1){
 		header('Location: login.php');
 }
 if ($_POST){
-	$file= "images/" .($_FILES['image']['name']);
+	if(empty($_POST['title']) ||  empty($_POST['content']) || empty($_FILES['image'])){
+		
+		if(empty($_POST['title'])){
+			$titleError='Title cannot be null';
+		}
+		if(empty($_POST['content'])){
+			$contentError='Content cannot be null';
+		}
+		if(empty($_FILES['image'])){
+			$imageError='Image cannot be null';
+		}
+	}else{
+		$file= "images/" .($_FILES['image']['name']);
 	$imageType=pathinfo($file,PATHINFO_EXTENSION);
 	if($imageType != 'png' && $imageType != 'jpg' && $imageType != 'jpeg' ){
 		echo  "<script>alert('Image Extension must be jpeg,jpg,png')</script>";
@@ -29,6 +41,7 @@ if ($_POST){
 			echo  "<script>alert('Your Post is added to the Blog');window.location.href='index.php';</script>";
 			
 		}
+	}
 	}
 }
 
@@ -165,18 +178,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <form class="" action="add.php" method="post" enctype="multipart/form-data">
                 <div class="card-body">
                   <div class="form-group">
-                    <label for="title">Title</label>
-                    <input type="text" class="form-control" name="title" placeholder="Title" required >
+                    <label for="title">Title</label><p style="color: red"><?php echo empty($titleError)? '': '*'. $titleError; ?></p>
+                    <input type="text" class="form-control" name="title" placeholder="Title"  >
                   </div>
                   <div class="form-group">
-                    <label for="content">Content</label>
-                    <input type="text" class="form-control" name="content" placeholder="" required>
+                    <label for="content">Content</label><p style="color: red"><?php echo empty($contentError)? '': '*'.$contentError; ?></p>
+                    <input type="text" class="form-control" name="content" placeholder="" >
                   </div>
                   <div class="form-group">
-                    <label for="exampleInputFile">File input</label>
+                    <label for="exampleInputFile">File input</label><p style="color: red"><?php echo empty($imageError)? '': '*'.$imageError; ?></p>
                     <div class="input-group">
                       <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="image">
+                        <input type="file" class="custom-file-input" name="image" required>
                         <label class="custom-file-label" for="image">Choose file</label>
                       </div>
                       
