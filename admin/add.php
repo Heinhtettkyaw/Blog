@@ -1,6 +1,9 @@
 <?php
- require '../config/config.php';
 session_start();
+require '../config/config.php';
+require '../config/common.php';
+
+
 if(empty($_SESSION['user_id'])&& empty($_SESSION['logged_in'])){
 	header('Location: login.php');
 }
@@ -8,8 +11,9 @@ if($_SESSION['role']!=1){
 		header('Location: login.php');
 }
 if ($_POST){
+	
 	if(empty($_POST['title']) ||  empty($_POST['content']) || empty($_FILES['image'])){
-		
+
 		if(empty($_POST['title'])){
 			$titleError='Title cannot be null';
 		}
@@ -20,28 +24,29 @@ if ($_POST){
 			$imageError='Image cannot be null';
 		}
 	}else{
+
 		$file= "images/" .($_FILES['image']['name']);
-	$imageType=pathinfo($file,PATHINFO_EXTENSION);
-	if($imageType != 'png' && $imageType != 'jpg' && $imageType != 'jpeg' ){
-		echo  "<script>alert('Image Extension must be jpeg,jpg,png')</script>";
-	}else{
-		move_uploaded_file($_FILES['image']['tmp_name'],$file);
-		$title=$_POST['title'];
-		$content=$_POST['content'];
-		$image=$_FILES['image']['name'];
-		$stmt=	$pdo->prepare("INSERT INTO posts (title,content,image,author_id) VALUES (:title,:content,:image,:author_id)");
-		$result=$stmt->execute(
-		array(':title'=>$title,
-			  ':content'=>$content,
-			  ':image'=>$image,
-			  ':author_id'=>$_SESSION['user_id']
-			 )
-		);
-		if($result){
-			echo  "<script>alert('Your Post is added to the Blog');window.location.href='index.php';</script>";
-			
+		$imageType=pathinfo($file,PATHINFO_EXTENSION);
+		if($imageType != 'png' && $imageType != 'jpg' && $imageType != 'jpeg' ){
+			echo  "<script>alert('Image Extension must be jpeg,jpg,png')</script>";
+		}else{
+			move_uploaded_file($_FILES['image']['tmp_name'],$file);
+			$title=$_POST['title'];
+			$content=$_POST['content'];
+			$image=$_FILES['image']['name'];
+			$stmt=	$pdo->prepare("INSERT INTO posts (title,content,image,author_id) VALUES (:title,:content,:image,:author_id)");
+			$result=$stmt->execute(
+			array(':title'=>$title,
+				  ':content'=>$content,
+				  ':image'=>$image,
+				  ':author_id'=>$_SESSION['user_id']
+				 )
+			);
+			if($result){
+				echo  "<script>alert('Your Post is added to the Blog');window.location.href='index.php';</script>";
+
+			}
 		}
-	}
 	}
 }
 
@@ -175,7 +180,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-              <form class="" action="add.php" method="post" enctype="multipart/form-data">
+              <form class="" action="add.php" method="POST" enctype="multipart/form-data">
+				 <input type="hidden" name="_token" value="<?php echo $_SESSION['_token']; ?>">
                 <div class="card-body">
                   <div class="form-group">
                     <label for="title">Title</label><p style="color: red"><?php echo empty($titleError)? '': '*'. $titleError; ?></p>

@@ -1,6 +1,7 @@
 <?php
 session_start();
-require ('../config/config.php');
+require '../config/config.php';
+require '../config/common.php';
 if(empty($_SESSION['user_id'])&& empty($_SESSION['logged_in'])){
 	header('Location: login.php');}
 if($_SESSION['role']!=1){
@@ -182,6 +183,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <div class="row">
          <div class="col-md-12">
               <form action="user-add1.php" method="post">
+			    <input type="hidden" name="_token" value="<?php echo $_SESSION['_token']; ?>">
+
                 <div class="form-group">
                     <label for="">Name</label><p style="color: red"><?php echo empty($nameError)? '': '*'.$nameError; ?></p>
                     <input type="text" class="form-control" name="name" >
